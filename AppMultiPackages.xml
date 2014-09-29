@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<NuGetterPackages>
+	<NuGetterPackage name="FluffIt">
+		<NuSpecFilePath>FluffIt\FluffIt.nuspec</NuSpecFilePath>
+	</NuGetterPackage>
+</NuGetterPackages>
