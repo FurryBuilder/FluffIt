@@ -1,4 +1,4 @@
-http://cloc.sourceforge.net v 1.60  T=0.09 s (259.9 files/s, 24537.1 lines/s)
+http://cloc.sourceforge.net v 1.60  T=0.09 s (272.0 files/s, 24885.5 lines/s)
 ------------------------------------------------------------------------------------------------------------------------------
 File                                                                                       blank        comment           code
 ------------------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ File                                                                            
 ..\FluffIt.Tests\FluffIt.Tests.csproj                                                          0              7             97
 ..\FluffIt\ObjectExtensions.cs                                                                13            105             90
 ..\FluffIt.WPF\FluffIt.WPF.csproj                                                              0              7             69
-..\FluffIt\FluffIt.csproj                                                                      0              7             57
+..\FluffIt\FluffIt.csproj                                                                      0              7             58
 ..\FluffIt.Tests\ObjectExtensionsTests\GivenValidObject.cs                                    18             24             54
 ..\FluffIt.Tests\ObjectExtensionsTests\GivenNullObject.cs                                     16             24             49
 ..\FluffIt\StringExtensions.cs                                                                 6             52             28
@@ -24,19 +24,20 @@ File                                                                            
 ..\FluffIt.WPF\Properties\AssemblyInfo.cs                                                      4             17             15
 ..\FluffIt\DictionaryExtensions.cs                                                             3             32             15
 ..\FluffIt.WinRT\Properties\AssemblyInfo.cs                                                    2             13             14
+..\FluffIt\StaticExtensions\ObjectEx.cs                                                        1              8             11
 ..\AppMultiPackages.xml                                                                        0              0              6
 ..\Tools\Clockr.bat                                                                            0              0              2
 ------------------------------------------------------------------------------------------------------------------------------
-SUM:                                                                                         262            643           1361
+SUM:                                                                                         263            651           1373
 ------------------------------------------------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C#                              17            262            608            885
-MSBuild scripts                  5              0             35            468
+C#                              18            263            616            896
+MSBuild scripts                  5              0             35            469
 XML                              1              0              0              6
 DOS Batch                        1              0              0              2
 -------------------------------------------------------------------------------
-SUM:                            24            262            643           1361
+SUM:                            25            263            651           1373
 -------------------------------------------------------------------------------
