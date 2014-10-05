@@ -7,7 +7,7 @@
         <authors>Furry Builder</authors>
         <owners>Furry Builder</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>An ultra light-weight dependency injection container built around the power of factories.</description>
+        <description>A set of extension methods to help in your every day tasks.</description>
     </metadata>
     <files>
         <file src="FluffIt.WPF\bin\Release\FluffIt.WPF.dll" target="lib\net45\FluffIt.WPF.dll" />
