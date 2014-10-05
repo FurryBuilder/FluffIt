@@ -1,42 +1,42 @@
-http://cloc.sourceforge.net v 1.60  T=0.16 s (149.8 files/s, 10604.0 lines/s)
+http://cloc.sourceforge.net v 1.60  T=0.09 s (259.9 files/s, 24537.1 lines/s)
 ------------------------------------------------------------------------------------------------------------------------------
 File                                                                                       blank        comment           code
 ------------------------------------------------------------------------------------------------------------------------------
-..\FluffIt.Tests\EnumerableExtensionsTests\GivenMultipleValuesEnumerable.cs                   50              0            136
-..\FluffIt.Tests\EnumerableExtensionsTests\GivenSingleValueEnumerable.cs                      50              0            132
-..\FluffIt.WinRT\FluffIt.WinRT.csproj                                                          0              7            123
-..\FluffIt\EnumerableExtensions.cs                                                            27              0            120
-..\FluffIt.WinPRT\FluffIt.WinPRT.csproj                                                        0              7            102
-..\FluffIt.Tests\EnumerableExtensionsTests\GivenEmptyEnumerable.cs                            35              0            100
+..\FluffIt\EnumerableExtensions.cs                                                            32            142            137
+..\FluffIt.Tests\EnumerableExtensionsTests\GivenMultipleValuesEnumerable.cs                   50             24            136
+..\FluffIt.WinRT\FluffIt.WinRT.csproj                                                          0              7            133
+..\FluffIt.Tests\EnumerableExtensionsTests\GivenSingleValueEnumerable.cs                      50             24            132
+..\FluffIt.WinPRT\FluffIt.WinPRT.csproj                                                        0              7            112
+..\FluffIt.Tests\EnumerableExtensionsTests\GivenEmptyEnumerable.cs                            35             24            100
 ..\FluffIt.Tests\FluffIt.Tests.csproj                                                          0              7             97
-..\FluffIt\ObjectExtensions.cs                                                                11             15             91
+..\FluffIt\ObjectExtensions.cs                                                                13            105             90
 ..\FluffIt.WPF\FluffIt.WPF.csproj                                                              0              7             69
 ..\FluffIt\FluffIt.csproj                                                                      0              7             57
-..\FluffIt.Tests\ObjectExtensionsTests\GivenValidObject.cs                                    18              0             54
-..\FluffIt.Tests\ObjectExtensionsTests\GivenNullObject.cs                                     16              0             49
-..\FluffIt.Tests\DictionaryExtensionsTests\GivenDictionary.cs                                 10              0             26
-..\FluffIt.Tests\StringBuilderExtensionsTests\GivenTestString.cs                               6              0             25
-..\FluffIt\StringExtensions.cs                                                                 3              0             22
+..\FluffIt.Tests\ObjectExtensionsTests\GivenValidObject.cs                                    18             24             54
+..\FluffIt.Tests\ObjectExtensionsTests\GivenNullObject.cs                                     16             24             49
+..\FluffIt\StringExtensions.cs                                                                 6             52             28
+..\FluffIt.Tests\DictionaryExtensionsTests\GivenDictionary.cs                                  9             24             26
+..\FluffIt.Tests\StringBuilderExtensionsTests\GivenTestString.cs                               5             24             25
 ..\FluffIt.WinPRT\Properties\AssemblyInfo.cs                                                   4             16             17
+..\FluffIt\StringBuilderExtensions.cs                                                          2             29             16
 ..\FluffIt\Properties\AssemblyInfo.cs                                                          9             17             16
 ..\FluffIt.Tests\Properties\AssemblyInfo.cs                                                    4             17             15
 ..\FluffIt.WPF\Properties\AssemblyInfo.cs                                                      4             17             15
-..\FluffIt\StringBuilderExtensions.cs                                                          1              0             15
-..\FluffIt\DictionaryExtensions.cs                                                             2              0             14
+..\FluffIt\DictionaryExtensions.cs                                                             3             32             15
 ..\FluffIt.WinRT\Properties\AssemblyInfo.cs                                                    2             13             14
 ..\AppMultiPackages.xml                                                                        0              0              6
 ..\Tools\Clockr.bat                                                                            0              0              2
 ------------------------------------------------------------------------------------------------------------------------------
-SUM:                                                                                         252            130           1317
+SUM:                                                                                         262            643           1361
 ------------------------------------------------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
 Language                     files          blank        comment           code
 -------------------------------------------------------------------------------
-C#                              17            252             95            861
-MSBuild scripts                  5              0             35            448
+C#                              17            262            608            885
+MSBuild scripts                  5              0             35            468
 XML                              1              0              0              6
 DOS Batch                        1              0              0              2
 -------------------------------------------------------------------------------
-SUM:                            24            252            130           1317
+SUM:                            24            262            643           1361
 -------------------------------------------------------------------------------
