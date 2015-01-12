@@ -79,11 +79,11 @@ namespace FluffIt.Tests.ObjectExtensionsTests
 		}
 
 		[TestMethod]
-		public void WhenAsNullInput_ThenDelegateNotCalled()
+		public void WhenMaybeAsNullInput_ThenDelegateNotCalled()
 		{
 			const string s = "a";
 
-			s.As((GivenNullObject _) => Assert.Fail());
+			s.MaybeAs((GivenNullObject _) => Assert.Fail());
 		}
 	}
 }

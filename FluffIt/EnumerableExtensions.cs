@@ -125,9 +125,8 @@ namespace FluffIt
 		public static TValue FirstOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, TKey needle)
 		{
 			return source
-				.Where(kv => Equals(kv.Key, needle))
-				.Select(kv => kv.Value)
-				.FirstOrDefault();
+				.FirstOrDefault(kv => Equals(kv.Key, needle))
+				.SelectOrDefault(kv => kv.Value);
 		}
 
 		/// <summary>
@@ -142,9 +141,8 @@ namespace FluffIt
 		public static TValue FirstOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer, TKey needle)
 		{
 			return source
-				.Where(kv => comparer.Equals(kv.Key, needle))
-				.Select(kv => kv.Value)
-				.FirstOrDefault();
+				.FirstOrDefault(kv => comparer.Equals(kv.Key, needle))
+				.SelectOrDefault(kv => kv.Value);
 		}
 
 		/// <summary>

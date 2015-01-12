@@ -73,12 +73,12 @@ namespace FluffIt.Tests.ObjectExtensionsTests
 		}
 
 		[TestMethod]
-		public void WhenAsNonNullInput_ThenDelegateCalled()
+		public void WhenMaybeAsNonNullInput_ThenDelegateCalled()
 		{
 			const string s = "a";
 			var validator = false;
 
-			s.As((object _) => validator = true);
+			s.MaybeAs((object _) => validator = true);
 
 			Assert.IsTrue(validator);
 		}

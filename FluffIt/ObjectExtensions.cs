@@ -164,16 +164,16 @@ namespace FluffIt
 			return source as TResult;
 		}
 
-		/// <summary>
-		/// Casts an input value to a target type and call a specified action on success.
-		/// Mostly used to create the equivalent of a switch on the type of a value.
-		/// </summary>
-		/// <typeparam name="TResult">The type to cast to</typeparam>
-		/// <typeparam name="TSource">The type to cast from</typeparam>
-		/// <param name="source">The source value to cast</param>
-		/// <param name="maybe">The action to execute if the cast is successfull</param>
-		/// <returns>The original, unconverted value</returns>
-		public static TSource As<TSource, TResult>(this TSource source, Action<TResult> maybe)
+	    /// <summary>
+	    /// Casts an input value to a target type and call a specified action on success.
+	    /// Mostly used to create the equivalent of a switch on the type of a value.
+	    /// </summary>
+	    /// <typeparam name="TSource">The type to cast from</typeparam>
+	    /// <typeparam name="TResult">The type to cast to</typeparam>
+	    /// <param name="source">The source value to cast</param>
+	    /// <param name="maybe">The action to execute if the cast is successfull</param>
+	    /// <returns>The original, unconverted value</returns>
+	    public static TSource MaybeAs<TSource, TResult>(this TSource source, Action<TResult> maybe)
 			where TResult : class
 		{
 			var result = source as TResult;

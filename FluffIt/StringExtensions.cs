@@ -80,7 +80,7 @@ namespace FluffIt
 		/// <returns>Returns the original string, or an empty string if the source is null</returns>
 		public static string Safe(this string source)
 		{
-			return source.Default(string.Empty);
+			return source ?? string.Empty;
 		}
 	}
 }
