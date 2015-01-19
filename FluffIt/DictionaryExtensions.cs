@@ -38,7 +38,7 @@ namespace FluffIt
 		/// <param name="dictionary">Dictionary holding the expected value</param>
 		/// <param name="key">Key to use when retriving the value from the dictionary</param>
 		/// <returns>Returns the value matching the provided key or a default value if the key cannot be found</returns>
-		public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
+		public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
 		{
 			TValue value;
 
