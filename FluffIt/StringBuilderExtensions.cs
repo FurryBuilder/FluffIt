@@ -26,9 +26,11 @@
 
 using System.Collections.Generic;
 using System.Text;
+using JetBrains.Annotations;
 
 namespace FluffIt
 {
+    [PublicAPI]
     public static class StringBuilderExtensions
     {
         /// <summary>
@@ -36,7 +38,8 @@ namespace FluffIt
         /// </summary>
         /// <param name="builder">The strings builder to convert</param>
         /// <returns>An enumerable sequence of all the characters stored inside the builder's buffer</returns>
-        public static IEnumerable<char> ToEnumerable(this StringBuilder builder)
+        [PublicAPI, Pure]
+        public static IEnumerable<char> ToEnumerable([NotNull] this StringBuilder builder)
         {
             for (var i = 0; i < builder.Length; ++i)
             {

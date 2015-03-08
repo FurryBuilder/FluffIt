@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace FluffIt.StaticExtensions
 {
+    [PublicAPI]
     public static class ObjectEx
     {
         /// <summary>
@@ -17,7 +19,8 @@ namespace FluffIt.StaticExtensions
         ///     to the default comparer
         /// </returns>
         /// <exception cref="Exception">A comparer throws an exception. </exception>
-        public static bool Equals<T>(T left, T right, IEqualityComparer<T> comparer)
+        [PublicAPI]
+        public static bool Equals<T>([CanBeNull] T left, [CanBeNull] T right, [CanBeNull] IEqualityComparer<T> comparer)
         {
             return comparer.SelectOrDefault(e => e.Equals(left, right), () => Equals(left, right));
         }

@@ -26,11 +26,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace FluffIt
 {
+    [PublicAPI]
     public static class EnumerableExtensions
     {
         /// <summary>
@@ -40,7 +41,10 @@ namespace FluffIt
         /// <param name="source">The enumerable source to iterate over</param>
         /// <param name="action">The action to execute for each element in the source</param>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
-        public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+        [PublicAPI]
+        public static void ForEach<TSource>(
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            [NotNull, InstantHandle] Action<TSource> action)
         {
             foreach (var item in source)
             {
@@ -55,7 +59,8 @@ namespace FluffIt
         /// <param name="source">The enumerable to validate</param>
         /// <returns>Returns true if the source contains no elements</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source" /> is null.</exception>
-        public static bool None<TSource>(this IEnumerable<TSource> source)
+        [PublicAPI]
+        public static bool None<TSource>([NotNull, InstantHandle] this IEnumerable<TSource> source)
         {
             return !source.Any();
         }
@@ -68,7 +73,10 @@ namespace FluffIt
         /// <param name="predicate">The function to use as predicate</param>
         /// <returns>Returns true if the source contains no elements that matches the predicate</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="predicate" /> is null.</exception>
-        public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        [PublicAPI]
+        public static bool None<TSource>(
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            [NotNull, InstantHandle] Func<TSource, bool> predicate)
         {
             return !source.Any(predicate);
         }
@@ -82,11 +90,15 @@ namespace FluffIt
         /// <param name="value">Value to look for in the elements</param>
         /// <returns>The first element that matches the value using the comparer</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
-        /// <exception cref="InvalidOperationException">No element satisfies the condition in <paramref name="comparer" />.-or-The source sequence is empty.</exception>
+        /// <exception cref="InvalidOperationException">
+        ///     No element satisfies the condition in <paramref name="comparer" />.-or-The
+        ///     source sequence is empty.
+        /// </exception>
+        [PublicAPI]
         public static TResult First<TResult>(
-            this IEnumerable<TResult> source,
-            IEqualityComparer<TResult> comparer,
-            TResult value)
+            [NotNull, InstantHandle] this IEnumerable<TResult> source,
+            [NotNull] IEqualityComparer<TResult> comparer,
+            [CanBeNull] TResult value)
         {
             return source.First(t => comparer.Equals(t, value));
         }
@@ -101,10 +113,11 @@ namespace FluffIt
         /// <param name="value">Value to look for in the elements</param>
         /// <returns>The first element that matches the value using the comparer or a default value if no element matches</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
+        [PublicAPI]
         public static TResult FirstOrDefault<TResult>(
-            this IEnumerable<TResult> source,
-            IEqualityComparer<TResult> comparer,
-            TResult value)
+            [NotNull, InstantHandle] this IEnumerable<TResult> source,
+            [NotNull] IEqualityComparer<TResult> comparer,
+            [CanBeNull] TResult value)
         {
             return source.FirstOrDefault(t => comparer.Equals(t, value));
         }
@@ -121,11 +134,12 @@ namespace FluffIt
         /// <returns>The first element that matches the value using the comparer or a default value if no element matches</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
         /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
+        [PublicAPI]
         public static TResult FirstOrDefault<TResult>(
-            this IEnumerable<TResult> source,
-            IEqualityComparer<TResult> comparer,
-            TResult value,
-            Func<TResult> defaultValueFactory)
+            [NotNull, InstantHandle] this IEnumerable<TResult> source,
+            [NotNull] IEqualityComparer<TResult> comparer,
+            [CanBeNull] TResult value,
+            [NotNull, InstantHandle] Func<TResult> defaultValueFactory)
         {
             foreach (var result in source.Where(s => comparer.Equals(s, value)))
             {
@@ -144,9 +158,10 @@ namespace FluffIt
         /// <param name="needle">The key to find inside the source enumerable</param>
         /// <returns>The value matching the provided key, or a default value if no element matches</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source" /> is null.</exception>
+        [PublicAPI]
         public static TValue FirstOrDefault<TKey, TValue>(
-            this IEnumerable<KeyValuePair<TKey, TValue>> source,
-            TKey needle)
+            [NotNull, InstantHandle] this IEnumerable<KeyValuePair<TKey, TValue>> source,
+            [CanBeNull] TKey needle)
         {
             return source
                 .FirstOrDefault(kv => Equals(kv.Key, needle))
@@ -163,10 +178,11 @@ namespace FluffIt
         /// <param name="needle">The key to find inside the source enumerable</param>
         /// <returns>The value matching the provided key, or a default value if no element matches</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
+        [PublicAPI]
         public static TValue FirstOrDefault<TKey, TValue>(
-            this IEnumerable<KeyValuePair<TKey, TValue>> source,
-            IEqualityComparer<TKey> comparer,
-            TKey needle)
+            [NotNull, InstantHandle] this IEnumerable<KeyValuePair<TKey, TValue>> source,
+            [NotNull] IEqualityComparer<TKey> comparer,
+            [CanBeNull] TKey needle)
         {
             return source
                 .FirstOrDefault(kv => comparer.Equals(kv.Key, needle))
@@ -181,7 +197,10 @@ namespace FluffIt
         /// <param name="action">Action to execute for each element</param>
         /// <returns>Returns the original sequence</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
-        public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+        [PublicAPI]
+        public static IEnumerable<TSource> Do<TSource>(
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            [NotNull, InstantHandle] Action<TSource> action)
         {
             foreach (var v in source)
             {
@@ -198,7 +217,10 @@ namespace FluffIt
         /// <param name="source">Sequence to update</param>
         /// <param name="value">Value to insert</param>
         /// <returns>Returns a new sequence containing the inserted value</returns>
-        public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
+        [PublicAPI]
+        public static IEnumerable<TSource> Prepend<TSource>(
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            [CanBeNull] TSource value)
         {
             yield return value;
 
@@ -215,7 +237,10 @@ namespace FluffIt
         /// <param name="source">Sequence to update</param>
         /// <param name="value">Value to insert</param>
         /// <returns>Returns a new sequence containing the inserted value</returns>
-        public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource value)
+        [PublicAPI]
+        public static IEnumerable<TSource> Append<TSource>(
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            [CanBeNull] TSource value)
         {
             foreach (var v in source)
             {
@@ -231,7 +256,8 @@ namespace FluffIt
         /// <typeparam name="TSource"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static IEnumerable<TSource> Safe<TSource>(this IEnumerable<TSource> source)
+        [PublicAPI, Pure]
+        public static IEnumerable<TSource> Safe<TSource>([CanBeNull] this IEnumerable<TSource> source)
         {
             return source ?? Enumerable.Empty<TSource>();
         }
@@ -243,7 +269,8 @@ namespace FluffIt
         /// <param name="source">Sequence to validate</param>
         /// <param name="count">Amount of required element in the sequence</param>
         /// <returns>Returns true if the sequence as at least count elements, false otherwise</returns>
-        public static bool Require<TSource>(this IEnumerable<TSource> source, int count)
+        [PublicAPI]
+        public static bool Require<TSource>([NotNull, InstantHandle] this IEnumerable<TSource> source, int count)
         {
             var i = 0;
 
@@ -261,7 +288,7 @@ namespace FluffIt
         }
 
         /// <summary>
-        ///     Ensures that a sequence contains at least a certain amount of elements.
+        ///     Ensures that a sequence contains at least a certain amount of elements that matches a specified predicate.
         /// </summary>
         /// <typeparam name="TSource">Type of the elements in the sequence</typeparam>
         /// <param name="source">Sequence to validate</param>
@@ -269,7 +296,11 @@ namespace FluffIt
         /// <param name="predicate">Function that validates if an element should be included in the count</param>
         /// <returns>Returns true if the sequence as at least count elements, false otherwise</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
-        public static bool Require<TSource>(this IEnumerable<TSource> source, int count, Func<TSource, bool> predicate)
+        [PublicAPI]
+        public static bool Require<TSource>(
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            int count,
+            [NotNull, InstantHandle] Func<TSource, bool> predicate)
         {
             var i = 0;
 
@@ -297,7 +328,10 @@ namespace FluffIt
         /// <typeparam name="TSource">Type of the element in the sequence</typeparam>
         /// <param name="source">Sequence of element to use as data in the sequence of actions</param>
         /// <param name="actions">Sequence of actions to execute over each element in the source sequence</param>
-        public static void Distribute<TSource>(this IEnumerable<TSource> source, params Action<TSource>[] actions)
+        [PublicAPI]
+        public static void Distribute<TSource>(
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            [NotNull, InstantHandle] params Action<TSource>[] actions)
         {
             var actionEnumerator = actions.GetEnumerator();
 
@@ -322,10 +356,11 @@ namespace FluffIt
         /// <param name="overflow">Action to use when all actions have been exhausted</param>
         /// <param name="actions">Sequence of actions to execute over each element in the source sequence</param>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
         public static void DistributeWithOverflow<TSource>(
-            this IEnumerable<TSource> source,
-            Action<TSource> overflow,
-            params Action<TSource>[] actions)
+            [NotNull, InstantHandle] this IEnumerable<TSource> source,
+            [NotNull, InstantHandle] Action<TSource> overflow,
+            [NotNull, InstantHandle] params Action<TSource>[] actions)
         {
             var actionEnumerator = actions.GetEnumerator();
 

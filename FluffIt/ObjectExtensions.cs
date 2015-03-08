@@ -26,9 +26,11 @@
 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace FluffIt
 {
+    [PublicAPI]
     public static class ObjectExtensions
     {
         /// <summary>
@@ -38,9 +40,10 @@ namespace FluffIt
         /// <param name="source">Value to check</param>
         /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
         /// <returns>True if the value is null or uses its default value.</returns>
+        [PublicAPI]
         public static bool IsNullOrDefault<TSource>(
-            this TSource source,
-            IEqualityComparer<TSource> valueTypeComparer = null)
+            [CanBeNull] this TSource source,
+            [CanBeNull] IEqualityComparer<TSource> valueTypeComparer = null)
         {
             return
                 ReferenceEquals(source, null) ||
@@ -58,10 +61,11 @@ namespace FluffIt
         /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
         /// <returns>Returns a new value if the source is null or uses a default value, else returns the untouched source.</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
         public static TSource Default<TSource>(
-            this TSource source,
-            Func<TSource> defaultValueFactory,
-            IEqualityComparer<TSource> valueTypeComparer = null)
+            [CanBeNull] this TSource source,
+            [NotNull, InstantHandle] Func<TSource> defaultValueFactory,
+            [CanBeNull] IEqualityComparer<TSource> valueTypeComparer = null)
         {
             return source.IsNullOrDefault(valueTypeComparer)
                 ? defaultValueFactory.Invoke()
@@ -76,10 +80,11 @@ namespace FluffIt
         /// <param name="defaultValue">Value to use when the source needs to be overriden.</param>
         /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
         /// <returns>Returns a new value if the source is null or uses a default value, else returns the untouched source.</returns>
+        [PublicAPI]
         public static TSource Default<TSource>(
-            this TSource source,
-            TSource defaultValue,
-            IEqualityComparer<TSource> valueTypeComparer = null)
+            [CanBeNull] this TSource source,
+            [CanBeNull] TSource defaultValue,
+            [CanBeNull] IEqualityComparer<TSource> valueTypeComparer = null)
         {
             return source.IsNullOrDefault(valueTypeComparer)
                 ? defaultValue
@@ -96,10 +101,11 @@ namespace FluffIt
         /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
         /// <returns>The projected value resulting from the transformation function.</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
         public static TResult SelectOrDefault<TSource, TResult>(
-            this TSource source,
-            Func<TSource, TResult> selector,
-            IEqualityComparer<TSource> valueTypeComparer = null)
+            [CanBeNull] this TSource source,
+            [NotNull, InstantHandle] Func<TSource, TResult> selector,
+            [CanBeNull] IEqualityComparer<TSource> valueTypeComparer = null)
         {
             return source.IsNullOrDefault(valueTypeComparer)
                 ? default(TResult)
@@ -117,11 +123,12 @@ namespace FluffIt
         /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
         /// <returns>The projected value resulting from the transformation function.</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
         public static TResult SelectOrDefault<TSource, TResult>(
-            this TSource source,
-            Func<TSource, TResult> selector,
-            Func<TResult> defaultValueFactory,
-            IEqualityComparer<TSource> valueTypeComparer = null
+            [CanBeNull] this TSource source,
+            [NotNull, InstantHandle] Func<TSource, TResult> selector,
+            [NotNull, InstantHandle] Func<TResult> defaultValueFactory,
+            [CanBeNull] IEqualityComparer<TSource> valueTypeComparer = null
             )
         {
             return source.IsNullOrDefault(valueTypeComparer)
@@ -140,11 +147,12 @@ namespace FluffIt
         /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
         /// <returns>The projected value resulting from the transformation function.</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
         public static TResult SelectOrDefault<TSource, TResult>(
-            this TSource source,
-            Func<TSource, TResult> selector,
-            TResult defaultValue,
-            IEqualityComparer<TSource> valueTypeComparer = null
+            [CanBeNull] this TSource source,
+            [NotNull, InstantHandle] Func<TSource, TResult> selector,
+            [CanBeNull] TResult defaultValue,
+            [CanBeNull] IEqualityComparer<TSource> valueTypeComparer = null
             )
         {
             return source.IsNullOrDefault(valueTypeComparer)
@@ -160,10 +168,11 @@ namespace FluffIt
         /// <param name="maybe">Function to invoke on the source</param>
         /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
         public static void Maybe<TSource>(
-            this TSource source,
-            Action<TSource> maybe,
-            IEqualityComparer<TSource> valueTypeComparer = null)
+            [CanBeNull] this TSource source,
+            [NotNull, InstantHandle] Action<TSource> maybe,
+            [CanBeNull] IEqualityComparer<TSource> valueTypeComparer = null)
         {
             if (!source.IsNullOrDefault(valueTypeComparer))
             {
@@ -177,7 +186,8 @@ namespace FluffIt
         /// <typeparam name="TResult">The type to cast to</typeparam>
         /// <param name="source">The source value to cast</param>
         /// <returns>The value casted into the specified type or null if the cast fails</returns>
-        public static TResult As<TResult>(this object source)
+        [PublicAPI, Pure]
+        public static TResult As<TResult>([CanBeNull] this object source)
             where TResult : class
         {
             return source as TResult;
@@ -193,7 +203,10 @@ namespace FluffIt
         /// <param name="maybe">The action to execute if the cast is successfull</param>
         /// <returns>The original, unconverted value</returns>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
-        public static TSource MaybeAs<TSource, TResult>(this TSource source, Action<TResult> maybe)
+        [PublicAPI]
+        public static TSource MaybeAs<TSource, TResult>(
+            [CanBeNull] this TSource source,
+            [NotNull, InstantHandle] Action<TResult> maybe)
             where TResult : class
         {
             var result = source as TResult;
@@ -211,10 +224,11 @@ namespace FluffIt
         /// <param name="isLocked">Check use to validate if the locker is already locked</param>
         /// <param name="lockedAction">Action to execute behind the lock</param>
         /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
         public static void DoubleCheckedLocked<TLocker>(
-            this TLocker locker,
-            Func<TLocker, bool> isLocked,
-            Action<TLocker> lockedAction)
+            [NotNull] this TLocker locker,
+            [NotNull, InstantHandle] Func<TLocker, bool> isLocked,
+            [NotNull, InstantHandle] Action<TLocker> lockedAction)
             where TLocker : class
         {
             if (isLocked.Invoke(locker))

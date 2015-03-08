@@ -26,9 +26,11 @@
 
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace FluffIt
 {
+    [PublicAPI]
     public static class DictionaryExtensions
     {
         /// <summary>
@@ -40,7 +42,10 @@ namespace FluffIt
         /// <param name="key">Key to use when retriving the value from the dictionary</param>
         /// <returns>Returns the value matching the provided key or a default value if the key cannot be found</returns>
         /// <exception cref="ArgumentNullException"><paramref name="key" /> is null.</exception>
-        public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        [PublicAPI]
+        public static TValue GetOrDefault<TKey, TValue>(
+            [NotNull] this IDictionary<TKey, TValue> dictionary,
+            [NotNull] TKey key)
         {
             TValue value;
 
