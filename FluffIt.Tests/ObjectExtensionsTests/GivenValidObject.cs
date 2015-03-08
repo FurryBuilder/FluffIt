@@ -28,69 +28,74 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluffIt.Tests.ObjectExtensionsTests
 {
-	[TestClass]
-	public class GivenValidObject
-	{
-		[TestMethod]
-		public void WhenDefaultNotNullInput_ThenDelegateNotCalled()
-		{
-			var s = "a";
+    [TestClass]
+    public class GivenValidObject
+    {
+        [TestMethod]
+        public void WhenDefaultNotNullInput_ThenDelegateNotCalled()
+        {
+            var s = "a";
 
-			s.Default(() => { Assert.Fail(); return null; });
-		}
+            s.Default(
+                () =>
+                {
+                    Assert.Fail();
+                    return null;
+                });
+        }
 
-		[TestMethod]
-		public void WhenSelectOrDefaultValidInput_ThenSelectCalled()
-		{
-			var s = "a";
+        [TestMethod]
+        public void WhenSelectOrDefaultValidInput_ThenSelectCalled()
+        {
+            var s = "a";
 
-			s = s.SelectOrDefault(_ => "1");
+            s = s.SelectOrDefault(_ => "1");
 
-			Assert.IsNotNull(s);
-			Assert.AreEqual(s, "1");
-		}
+            Assert.IsNotNull(s);
+            Assert.AreEqual(s, "1");
+        }
 
-		[TestMethod]
-		public void WhenSelectOrDefaultValidInputWithDefault_ThenSelectCalled()
-		{
-			var s = "a";
+        [TestMethod]
+        public void WhenSelectOrDefaultValidInputWithDefault_ThenSelectCalled()
+        {
+            var s = "a";
 
-			s = s.SelectOrDefault(_ => "1", () => "2");
+            s = s.SelectOrDefault(_ => "1", () => "2");
 
-			Assert.IsNotNull(s);
-			Assert.AreEqual(s, "1");
-		}
+            Assert.IsNotNull(s);
+            Assert.AreEqual(s, "1");
+        }
 
-		[TestMethod]
-		public void WhenMaybeNonNullInput_ThenDelegateCalled()
-		{
-			const string s = "a";
-			var validator = false;
+        [TestMethod]
+        public void WhenMaybeNonNullInput_ThenDelegateCalled()
+        {
+            const string s = "a";
+            var validator = false;
 
-			s.Maybe(_ => validator = true);
+            s.Maybe(_ => validator = true);
 
-			Assert.IsTrue(validator);
-		}
+            Assert.IsTrue(validator);
+        }
 
-		[TestMethod]
-		public void WhenMaybeAsNonNullInput_ThenDelegateCalled()
-		{
-			const string s = "a";
-			var validator = false;
+        [TestMethod]
+        public void WhenMaybeAsNonNullInput_ThenDelegateCalled()
+        {
+            const string s = "a";
+            var validator = false;
 
-			s.MaybeAs((object _) => validator = true);
+            s.MaybeAs((object _) => validator = true);
 
-			Assert.IsTrue(validator);
-		}
+            Assert.IsTrue(validator);
+        }
 
-		[TestMethod]
-		public void WhenDoubleCheckedLocked_ThenCheckBeforeLock()
-		{
-			var validator = false;
+        [TestMethod]
+        public void WhenDoubleCheckedLocked_ThenCheckBeforeLock()
+        {
+            var validator = false;
 
-			"a".DoubleCheckedLocked(s => s.Equals("a"), _ => validator = true);
+            "a".DoubleCheckedLocked(s => s.Equals("a"), _ => validator = true);
 
-			Assert.IsTrue(validator);
-		}
-	}
+            Assert.IsTrue(validator);
+        }
+    }
 }

@@ -25,62 +25,82 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 using System;
+using JetBrains.Annotations;
 
 namespace FluffIt
 {
-	public static class StringExtensions
-	{
-		/// <summary>
-		/// Checks if a string is null or an empty string.
-		/// </summary>
-		/// <param name="source">The string to check</param>
-		/// <returns>Returns true if the string is null or empty</returns>
-		public static bool IsNullOrEmpty(this string source)
-		{
-			return string.IsNullOrEmpty(source);
-		}
+    [PublicAPI]
+    public static class StringExtensions
+    {
+        /// <summary>
+        ///     Checks if a string is null or an empty string.
+        /// </summary>
+        /// <param name="source">The string to check</param>
+        /// <returns>Returns true if the string is null or empty</returns>
+        [PublicAPI, Pure]
+        public static bool IsNullOrEmpty([CanBeNull] this string source)
+        {
+            return string.IsNullOrEmpty(source);
+        }
 
-		/// <summary>
-		/// Checks if a string is null, empty or only composed of white-space characters.
-		/// </summary>
-		/// <param name="source">The string to check</param>
-		/// <returns>Returns true if the string is null, empty or contains only white-space characters</returns>
-		public static bool IsNullOrWhiteSpace(this string source)
-		{
-			return string.IsNullOrWhiteSpace(source);
-		}
+        /// <summary>
+        ///     Checks if a string is null, empty or only composed of white-space characters.
+        /// </summary>
+        /// <param name="source">The string to check</param>
+        /// <returns>Returns true if the string is null, empty or contains only white-space characters</returns>
+        [PublicAPI, Pure]
+        public static bool IsNullOrWhiteSpace([CanBeNull] this string source)
+        {
+            return string.IsNullOrWhiteSpace(source);
+        }
 
-		/// <summary>
-		/// Replaces each format item in a specified string with the text equivalent of a corresponding object's value.
-		/// </summary>
-		/// <param name="source">A composite format string</param>
-		/// <param name="args">Objects to format</param>
-		/// <returns>A new string with all format items replaced with their corresponding of values</returns>
-		public static string Format(this string source, params object[] args)
-		{
-			return string.Format(source, args);
-		}
+        /// <summary>
+        ///     Replaces each format item in a specified string with the text equivalent of a corresponding object's value.
+        /// </summary>
+        /// <param name="source">A composite format string</param>
+        /// <param name="args">Objects to format</param>
+        /// <returns>A new string with all format items replaced with their corresponding of values</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="args" /> is null. </exception>
+        /// <exception cref="FormatException">
+        ///     <paramref name="source" /> is invalid.-or- The index of a format item is less than
+        ///     zero, or greater than or equal to the length of the <paramref name="args" /> array.
+        /// </exception>
+        [PublicAPI, Pure, StringFormatMethod("source")]
+        public static string Format([NotNull] this string source, [NotNull] params object[] args)
+        {
+            return string.Format(source, args);
+        }
 
-		/// <summary>
-		/// Replaces each format item in a specified string with the text equivalent of a corresponding object's value.
-		/// </summary>
-		/// <param name="source">A composite format string</param>
-		/// <param name="provider">Provides culture specific formating information</param>
-		/// <param name="args">Objects to format</param>
-		/// <returns>A new string with all format items replaced with their corresponding of values</returns>
-		public static string Format(this string source, IFormatProvider provider, params object[] args)
-		{
-			return string.Format(provider, source, args);
-		}
+        /// <summary>
+        ///     Replaces each format item in a specified string with the text equivalent of a corresponding object's value.
+        /// </summary>
+        /// <param name="source">A composite format string</param>
+        /// <param name="provider">Provides culture specific formating information</param>
+        /// <param name="args">Objects to format</param>
+        /// <returns>A new string with all format items replaced with their corresponding of values</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="args" /> is null. </exception>
+        /// <exception cref="FormatException">
+        ///     <paramref name="source" /> is invalid.-or- The index of a format item is less than
+        ///     zero, or greater than or equal to the length of the <paramref name="args" /> array.
+        /// </exception>
+        [PublicAPI, Pure, StringFormatMethod("source")]
+        public static string Format(
+            [NotNull] this string source,
+            [NotNull] IFormatProvider provider,
+            [NotNull] params object[] args)
+        {
+            return string.Format(provider, source, args);
+        }
 
-		/// <summary>
-		/// Returns an empty string if the source string is null.
-		/// </summary>
-		/// <param name="source">The string to validate</param>
-		/// <returns>Returns the original string, or an empty string if the source is null</returns>
-		public static string Safe(this string source)
-		{
-			return source ?? string.Empty;
-		}
-	}
+        /// <summary>
+        ///     Returns an empty string if the source string is null.
+        /// </summary>
+        /// <param name="source">The string to validate</param>
+        /// <returns>Returns the original string, or an empty string if the source is null</returns>
+        [PublicAPI, Pure]
+        public static string Safe([CanBeNull] this string source)
+        {
+            return source ?? string.Empty;
+        }
+    }
 }

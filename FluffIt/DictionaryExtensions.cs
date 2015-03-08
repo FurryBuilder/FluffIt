@@ -24,27 +24,34 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace FluffIt
 {
-	public static class DictionaryExtensions
-	{
-		/// <summary>
-		/// Safely extracts a value from a dictionary.
-		/// </summary>
-		/// <typeparam name="TKey">Type of the key</typeparam>
-		/// <typeparam name="TValue">Type of the value</typeparam>
-		/// <param name="dictionary">Dictionary holding the expected value</param>
-		/// <param name="key">Key to use when retriving the value from the dictionary</param>
-		/// <returns>Returns the value matching the provided key or a default value if the key cannot be found</returns>
-		public static TValue GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
-		{
-			TValue value;
+    [PublicAPI]
+    public static class DictionaryExtensions
+    {
+        /// <summary>
+        ///     Safely extracts a value from a dictionary.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the key</typeparam>
+        /// <typeparam name="TValue">Type of the value</typeparam>
+        /// <param name="dictionary">Dictionary holding the expected value</param>
+        /// <param name="key">Key to use when retriving the value from the dictionary</param>
+        /// <returns>Returns the value matching the provided key or a default value if the key cannot be found</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="key" /> is null.</exception>
+        [PublicAPI]
+        public static TValue GetOrDefault<TKey, TValue>(
+            [NotNull] this IDictionary<TKey, TValue> dictionary,
+            [NotNull] TKey key)
+        {
+            TValue value;
 
-			return dictionary.TryGetValue(key, out value)
-				? value
-				: default(TValue);
-		}
-	}
+            return dictionary.TryGetValue(key, out value)
+                ? value
+                : default(TValue);
+        }
+    }
 }
