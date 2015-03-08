@@ -28,62 +28,62 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluffIt.Tests.ObjectExtensionsTests
 {
-	[TestClass]
-	public class GivenNullObject
-	{
-		[TestMethod]
-		public void WhenDefaultNullInput_ThenDelegate()
-		{
-			string s = null;
+    [TestClass]
+    public class GivenNullObject
+    {
+        [TestMethod]
+        public void WhenDefaultNullInput_ThenDelegate()
+        {
+            string s = null;
 
-			s = s.Default(() => "1");
+            s = s.Default(() => "1");
 
-			Assert.AreEqual("1", s);
-		}
+            Assert.AreEqual("1", s);
+        }
 
-		[TestMethod]
-		public void WhenSelectOrDefaultNullInput_ThenDelegateNotCalled()
-		{
-			string s = null;
+        [TestMethod]
+        public void WhenSelectOrDefaultNullInput_ThenDelegateNotCalled()
+        {
+            string s = null;
 
-			s = s.SelectOrDefault(_ => "1");
+            s = s.SelectOrDefault(_ => "1");
 
-			Assert.IsNull(s);
-		}
+            Assert.IsNull(s);
+        }
 
-		[TestMethod]
-		public void WhenSelectOrDefaultNullInputWithDefault_ThenDefaultValueCalled()
-		{
-			string s = null;
+        [TestMethod]
+        public void WhenSelectOrDefaultNullInputWithDefault_ThenDefaultValueCalled()
+        {
+            string s = null;
 
-			s = s.SelectOrDefault(_ => "1", () => "d");
+            s = s.SelectOrDefault(_ => "1", () => "d");
 
-			Assert.IsNotNull(s);
-			Assert.AreEqual(s, "d");
-		}
+            Assert.IsNotNull(s);
+            Assert.AreEqual(s, "d");
+        }
 
-		[TestMethod]
-		public void WhenMaybeNullInput_ThenDelegateNotCalled()
-		{
-			string s = null;
+        [TestMethod]
+        public void WhenMaybeNullInput_ThenDelegateNotCalled()
+        {
+            string s = null;
 
-			s.Maybe(_ => Assert.Fail());
-		}
+            s.Maybe(_ => Assert.Fail());
+        }
 
-		[TestMethod]
-		public void WhenAsNullInput_ThenNull()
-		{
-			const string s = "a";
+        [TestMethod]
+        public void WhenAsNullInput_ThenNull()
+        {
+            const string s = "a";
 
-			Assert.IsNull(s.As<GivenNullObject>());
-		}
+            Assert.IsNull(s.As<GivenNullObject>());
+        }
 
-		[TestMethod]
-		public void WhenMaybeAsNullInput_ThenDelegateNotCalled()
-		{
-			const string s = "a";
+        [TestMethod]
+        public void WhenMaybeAsNullInput_ThenDelegateNotCalled()
+        {
+            const string s = "a";
 
-			s.MaybeAs((GivenNullObject _) => Assert.Fail());
-		}
-	}
+            s.MaybeAs((GivenNullObject _) => Assert.Fail());
+        }
+    }
 }

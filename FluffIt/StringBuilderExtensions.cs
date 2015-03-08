@@ -29,19 +29,19 @@ using System.Text;
 
 namespace FluffIt
 {
-	public static class StringBuilderExtensions
-	{
-		/// <summary>
-		/// Converts a StringBuilder to an enumerable.
-		/// </summary>
-		/// <param name="builder">The strings builder to convert</param>
-		/// <returns>An enumerable sequence of all the characters stored inside the builder's buffer</returns>
-		public static IEnumerable<char> ToEnumerable(this StringBuilder builder)
-		{
-			for (var i = 0; i < builder.Length; ++i)
-			{
-				yield return builder[i];
-			}
-		}
-	}
+    public static class StringBuilderExtensions
+    {
+        /// <summary>
+        ///     Converts a StringBuilder to an enumerable.
+        /// </summary>
+        /// <param name="builder">The strings builder to convert</param>
+        /// <returns>An enumerable sequence of all the characters stored inside the builder's buffer</returns>
+        public static IEnumerable<char> ToEnumerable(this StringBuilder builder)
+        {
+            for (var i = 0; i < builder.Length; ++i)
+            {
+                yield return builder[i];
+            }
+        }
+    }
 }

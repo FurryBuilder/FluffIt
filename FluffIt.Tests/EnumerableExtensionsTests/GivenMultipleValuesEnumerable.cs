@@ -30,181 +30,186 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluffIt.Tests.EnumerableExtensionsTests
 {
-	[TestClass]
-	public class GivenEnumerableExtensions
-	{
-		private class FakeComparer : IEqualityComparer<int>
-		{
-			public static readonly FakeComparer Default = new FakeComparer();
+    [TestClass]
+    public class GivenEnumerableExtensions
+    {
+        [TestMethod]
+        public void WhenForEach_ThenLoop()
+        {
+            var count = 0;
+            var list = new[] { 1, 2, 3 };
 
-			public bool Equals(int x, int y)
-			{
-				return x == y - 1;
-			}
+            list.ForEach(i => ++count);
 
-			public int GetHashCode(int obj)
-			{
-				return obj.GetHashCode();
-			}
-		}
+            Assert.AreEqual(3, count);
+        }
 
-		[TestMethod]
-		public void WhenForEach_ThenLoop()
-		{
-			var count = 0;
-			var list = new[] { 1, 2, 3 };
+        [TestMethod]
+        public void WhenNone_ThenFalse()
+        {
+            var list = new[] { 1, 2, 3 };
 
-			list.ForEach(i => ++count);
+            var result = list.None();
 
-			Assert.AreEqual(3, count);
-		}
+            Assert.IsFalse(result);
+        }
 
-		[TestMethod]
-		public void WhenNone_ThenFalse()
-		{
-			var list = new[] { 1, 2, 3 };
+        [TestMethod]
+        public void WhenNoneWithPredicate_ThenTrue()
+        {
+            var list = new[] { 1, 2, 3 };
 
-			var result = list.None();
+            var result = list.None(i => i < 1 || i > 4);
 
-			Assert.IsFalse(result);
-		}
+            Assert.IsTrue(result);
+        }
 
-		[TestMethod]
-		public void WhenNoneWithPredicate_ThenTrue()
-		{
-			var list = new[] { 1, 2, 3 };
+        [TestMethod]
+        public void WhenFirstWithComparer_ThenMatch()
+        {
+            var list = new[] { 0, 1, 2 };
 
-			var result = list.None(i => i < 1 || i > 4);
+            var result = list.First(FakeComparer.Default, 3);
 
-			Assert.IsTrue(result);
-		}
+            Assert.AreEqual(2, result);
+        }
 
-		[TestMethod]
-		public void WhenFirstWithComparer_ThenMatch()
-		{
-			var list = new[] { 0, 1, 2 };
+        [TestMethod]
+        public void WhenFirstOrDefaultWithComparerValid_ThenValue()
+        {
+            var list = new[] { 1, 2, 3 };
 
-			var result = list.First(FakeComparer.Default, 3);
+            var result = list.FirstOrDefault(FakeComparer.Default, 4);
 
-			Assert.AreEqual(2, result);
-		}
+            Assert.AreEqual(3, result);
+        }
 
-		[TestMethod]
-		public void WhenFirstOrDefaultWithComparerValid_ThenValue()
-		{
-			var list = new[] { 1, 2, 3 };
+        [TestMethod]
+        public void WhenFirstOrDefaultWithComparerInvalid_ThenDefault()
+        {
+            var list = new[] { 1, 2, 3 };
 
-			var result = list.FirstOrDefault(FakeComparer.Default, 4);
+            var result = list.FirstOrDefault(FakeComparer.Default, 5);
 
-			Assert.AreEqual(3, result);
-		}
+            Assert.AreEqual(0, result);
+        }
 
-		[TestMethod]
-		public void WhenFirstOrDefaultWithComparerInvalid_ThenDefault()
-		{
-			var list = new[] { 1, 2, 3 };
+        [TestMethod]
+        public void WhenFirstOrDefaultWithComparerAndDefaultValid_ThenValue()
+        {
+            var list = new[] { 1, 2, 3 };
 
-			var result = list.FirstOrDefault(FakeComparer.Default, 5);
+            var result = list.FirstOrDefault(FakeComparer.Default, 4, () => 5);
 
-			Assert.AreEqual(0, result);
-		}
+            Assert.AreEqual(3, result);
+        }
 
-		[TestMethod]
-		public void WhenFirstOrDefaultWithComparerAndDefaultValid_ThenValue()
-		{
-			var list = new[] { 1, 2, 3 };
+        [TestMethod]
+        public void WhenFirstOrDefaultWithComparerAndDefaultInvalid_ThenDefault()
+        {
+            var list = new[] { 1, 2, 3 };
 
-			var result = list.FirstOrDefault(FakeComparer.Default, 4, () => 5);
+            var result = list.FirstOrDefault(FakeComparer.Default, 1, () => 4);
 
-			Assert.AreEqual(3, result);
-		}
+            Assert.AreEqual(4, result);
+        }
 
-		[TestMethod]
-		public void WhenFirstOrDefaultWithComparerAndDefaultInvalid_ThenDefault()
-		{
-			var list = new[] { 1, 2, 3 };
+        [TestMethod]
+        public void WhenDo_ThenRun()
+        {
+            var list = new[] { 0, 1, 2 };
 
-			var result = list.FirstOrDefault(FakeComparer.Default, 1, () => 4);
+            var values = string.Empty;
 
-			Assert.AreEqual(4, result);
-		}
+            list
+                .Do(v => values += v + ":")
+                .ForEach(v => values += v + ",");
 
-		[TestMethod]
-		public void WhenDo_ThenRun()
-		{
-			var list = new[] { 0, 1, 2 };
+            Assert.AreEqual("0:0,1:1,2:2,", values);
+        }
 
-			var values = string.Empty;
+        [TestMethod]
+        public void WhenPrepend_ThenInsertFirst()
+        {
+            var list = new[] { 0, 1, 2 };
 
-			list
-				.Do(v => values += v + ":")
-				.ForEach(v => values += v + ",");
+            var result = list.Prepend(-1).ToArray();
 
-			Assert.AreEqual("0:0,1:1,2:2,", values);
-		}
+            Assert.AreEqual(4, result.Length);
+            Assert.AreEqual(-1, result[0]);
+            Assert.AreEqual(0, result[1]);
+            Assert.AreEqual(1, result[2]);
+            Assert.AreEqual(2, result[3]);
+        }
 
-		[TestMethod]
-		public void WhenPrepend_ThenInsertFirst()
-		{
-			var list = new[] { 0, 1, 2 };
+        [TestMethod]
+        public void WhenAppend_ThenInsertLast()
+        {
+            var list = new[] { 0, 1, 2 };
 
-			var result = list.Prepend(-1).ToArray();
+            var result = list.Append(3).ToArray();
 
-			Assert.AreEqual(4, result.Length);
-			Assert.AreEqual(-1, result[0]);
-			Assert.AreEqual(0, result[1]);
-			Assert.AreEqual(1, result[2]);
-			Assert.AreEqual(2, result[3]);
-		}
+            Assert.AreEqual(4, result.Length);
+            Assert.AreEqual(0, result[0]);
+            Assert.AreEqual(1, result[1]);
+            Assert.AreEqual(2, result[2]);
+            Assert.AreEqual(3, result[3]);
+        }
 
-		[TestMethod]
-		public void WhenAppend_ThenInsertLast()
-		{
-			var list = new[] { 0, 1, 2 };
+        [TestMethod]
+        public void WhenDistribute_ThenRunAllSkipLast()
+        {
+            var list = new[] { 0, 1, 2 };
 
-			var result = list.Append(3).ToArray();
+            var isCalled = 0;
 
-			Assert.AreEqual(4, result.Length);
-			Assert.AreEqual(0, result[0]);
-			Assert.AreEqual(1, result[1]);
-			Assert.AreEqual(2, result[2]);
-			Assert.AreEqual(3, result[3]);
-		}
+            list.Distribute(_ => isCalled += 1, _ => isCalled += 3, _ => isCalled += 5, _ => isCalled += 7);
 
-		[TestMethod]
-		public void WhenDistribute_ThenRunAllSkipLast()
-		{
-			var list = new[] { 0, 1, 2 };
+            Assert.AreEqual(9, isCalled);
+        }
 
-			var isCalled = 0;
+        [TestMethod]
+        public void WhenDistributeWithOverflow_ThenRunFirst()
+        {
+            var list = new[] { 0, 1, 2 };
 
-			list.Distribute(_ => isCalled += 1, _ => isCalled += 3, _ => isCalled += 5, _ => isCalled += 7);
+            var isCalled = 0;
 
-			Assert.AreEqual(9, isCalled);
-		}
+            list.DistributeWithOverflow(
+                _ => isCalled += 1,
+                _ => isCalled += 3,
+                _ => isCalled += 5,
+                _ => isCalled += 7,
+                _ => isCalled += 11);
 
-		[TestMethod]
-		public void WhenDistributeWithOverflow_ThenRunFirst()
-		{
-			var list = new[] { 0, 1, 2 };
+            Assert.AreEqual(15, isCalled);
+        }
 
-			var isCalled = 0;
+        [TestMethod]
+        public void WhenDistributeWithOverflowWithNoFunc_ThenRunFirst()
+        {
+            var list = new[] { 0, 1, 2 };
 
-			list.DistributeWithOverflow(_ => isCalled += 1, _ => isCalled += 3, _ => isCalled += 5, _ => isCalled += 7, _ => isCalled += 11);
+            var isCalled = 0;
 
-			Assert.AreEqual(15, isCalled);
-		}
+            list.DistributeWithOverflow(_ => isCalled += 1, _ => isCalled += 3);
 
-		[TestMethod]
-		public void WhenDistributeWithOverflowWithNoFunc_ThenRunFirst()
-		{
-			var list = new[] { 0, 1, 2 };
+            Assert.AreEqual(5, isCalled);
+        }
 
-			var isCalled = 0;
+        private class FakeComparer : IEqualityComparer<int>
+        {
+            public static readonly FakeComparer Default = new FakeComparer();
 
-			list.DistributeWithOverflow(_ => isCalled += 1, _ => isCalled += 3);
+            public bool Equals(int x, int y)
+            {
+                return x == y - 1;
+            }
 
-			Assert.AreEqual(5, isCalled);
-		}
-	}
+            public int GetHashCode(int obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
+    }
 }

@@ -26,284 +26,320 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace FluffIt
 {
-	public static class EnumerableExtensions
-	{
-		/// <summary>
-		/// Iterates over an enumerable source and execute an action for each elements.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the element contained in the enumerable source</typeparam>
-		/// <param name="source">The enumerable source to iterate over</param>
-		/// <param name="action">The action to execute for each element in the source</param>
-		public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
-		{
-			foreach (var item in source)
-			{
-				action.Invoke(item);
-			}
-		}
+    public static class EnumerableExtensions
+    {
+        /// <summary>
+        ///     Iterates over an enumerable source and execute an action for each elements.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the element contained in the enumerable source</typeparam>
+        /// <param name="source">The enumerable source to iterate over</param>
+        /// <param name="action">The action to execute for each element in the source</param>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+        {
+            foreach (var item in source)
+            {
+                action.Invoke(item);
+            }
+        }
 
-		/// <summary>
-		/// Checks wether an enumerable contains no value.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the elemnt contained in the enumerable source</typeparam>
-		/// <param name="source">The enumerable to validate</param>
-		/// <returns>Returns true if the source contains no elements</returns>
-		public static bool None<TSource>(this IEnumerable<TSource> source)
-		{
-			return !source.Any();
-		}
+        /// <summary>
+        ///     Checks wether an enumerable contains no value.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elemnt contained in the enumerable source</typeparam>
+        /// <param name="source">The enumerable to validate</param>
+        /// <returns>Returns true if the source contains no elements</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> is null.</exception>
+        public static bool None<TSource>(this IEnumerable<TSource> source)
+        {
+            return !source.Any();
+        }
 
-		/// <summary>
-		/// Checks wether an enumerable contains no value matching a predicate.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the elemnt contained in the enumerable source</typeparam>
-		/// <param name="source">The enumerable to validate</param>
-		/// <param name="predicate">The function to use as predicate</param>
-		/// <returns>Returns true if the source contains no elements that matches the predicate</returns>
-		public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
-		{
-			return !source.Any(predicate.Invoke);
-		}
+        /// <summary>
+        ///     Checks wether an enumerable contains no value matching a predicate.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elemnt contained in the enumerable source</typeparam>
+        /// <param name="source">The enumerable to validate</param>
+        /// <param name="predicate">The function to use as predicate</param>
+        /// <returns>Returns true if the source contains no elements that matches the predicate</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="predicate" /> is null.</exception>
+        public static bool None<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            return !source.Any(predicate);
+        }
 
-		/// <summary>
-		/// Returns the first element of a sequence that satisfies a comparer using a provided value.
-		/// </summary>
-		/// <typeparam name="TResult">Type of the element in the sequence</typeparam>
-		/// <param name="source">Source enumerable to look for elements</param>
-		/// <param name="comparer">Comparer object to use when matching the provided value to the various elements</param>
-		/// <param name="value">Value to look for in the elements</param>
-		/// <returns>The first element that matches the value using the comparer</returns>
-		public static TResult First<TResult>(this IEnumerable<TResult> source, IEqualityComparer<TResult> comparer, TResult value)
-		{
-			return source.First(t => comparer.Equals(t, value));
-		}
+        /// <summary>
+        ///     Returns the first element of a sequence that satisfies a comparer using a provided value.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the element in the sequence</typeparam>
+        /// <param name="source">Source enumerable to look for elements</param>
+        /// <param name="comparer">Comparer object to use when matching the provided value to the various elements</param>
+        /// <param name="value">Value to look for in the elements</param>
+        /// <returns>The first element that matches the value using the comparer</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
+        /// <exception cref="InvalidOperationException">No element satisfies the condition in <paramref name="comparer" />.-or-The source sequence is empty.</exception>
+        public static TResult First<TResult>(
+            this IEnumerable<TResult> source,
+            IEqualityComparer<TResult> comparer,
+            TResult value)
+        {
+            return source.First(t => comparer.Equals(t, value));
+        }
 
-		/// <summary>
-		/// Returns the first element of a sequence that satisfies a comparer using a provided value, or a default value if no such element is found.
-		/// </summary>
-		/// <typeparam name="TResult">Type of the element in the sequence</typeparam>
-		/// <param name="source">Source enumerable to look for elements</param>
-		/// <param name="comparer">Comparer object to use when matching the provided value to the various elements</param>
-		/// <param name="value">Value to look for in the elements</param>
-		/// <returns>The first element that matches the value using the comparer or a default value if no element matches</returns>
-		public static TResult FirstOrDefault<TResult>(this IEnumerable<TResult> source, IEqualityComparer<TResult> comparer, TResult value)
-		{
-			return source.FirstOrDefault(t => comparer.Equals(t, value));
-		}
+        /// <summary>
+        ///     Returns the first element of a sequence that satisfies a comparer using a provided value, or a default value if no
+        ///     such element is found.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the element in the sequence</typeparam>
+        /// <param name="source">Source enumerable to look for elements</param>
+        /// <param name="comparer">Comparer object to use when matching the provided value to the various elements</param>
+        /// <param name="value">Value to look for in the elements</param>
+        /// <returns>The first element that matches the value using the comparer or a default value if no element matches</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
+        public static TResult FirstOrDefault<TResult>(
+            this IEnumerable<TResult> source,
+            IEqualityComparer<TResult> comparer,
+            TResult value)
+        {
+            return source.FirstOrDefault(t => comparer.Equals(t, value));
+        }
 
-		/// <summary>
-		/// Returns the first element of a sequence that satisfies a comparer using a provided value, or a default value if no such element is found.
-		/// </summary>
-		/// <typeparam name="TResult">Type of the element in the sequence</typeparam>
-		/// <param name="source">Source enumerable to look for elements</param>
-		/// <param name="comparer">Comparer object to use when matching the provided value to the various elements</param>
-		/// <param name="value">Value to look for in the elements</param>
-		/// <param name="defaultValueFactory">Function used to provide a default value if no matching element have been found</param>
-		/// <returns>The first element that matches the value using the comparer or a default value if no element matches</returns>
-		public static TResult FirstOrDefault<TResult>(this IEnumerable<TResult> source, IEqualityComparer<TResult> comparer, TResult value, Func<TResult> defaultValueFactory)
-		{
-			foreach (var result in source.Where(s => comparer.Equals(s, value)))
-			{
-				return result;
-			}
+        /// <summary>
+        ///     Returns the first element of a sequence that satisfies a comparer using a provided value, or a default value if no
+        ///     such element is found.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the element in the sequence</typeparam>
+        /// <param name="source">Source enumerable to look for elements</param>
+        /// <param name="comparer">Comparer object to use when matching the provided value to the various elements</param>
+        /// <param name="value">Value to look for in the elements</param>
+        /// <param name="defaultValueFactory">Function used to provide a default value if no matching element have been found</param>
+        /// <returns>The first element that matches the value using the comparer or a default value if no element matches</returns>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
+        public static TResult FirstOrDefault<TResult>(
+            this IEnumerable<TResult> source,
+            IEqualityComparer<TResult> comparer,
+            TResult value,
+            Func<TResult> defaultValueFactory)
+        {
+            foreach (var result in source.Where(s => comparer.Equals(s, value)))
+            {
+                return result;
+            }
 
-			return defaultValueFactory.Invoke();
-		}
+            return defaultValueFactory.Invoke();
+        }
 
-		/// <summary>
-		/// Returns the first element of a key value pair sequence that matches the provided key.
-		/// </summary>
-		/// <typeparam name="TKey">Type of the key inside the sequence</typeparam>
-		/// <typeparam name="TValue">Type of the value inside the sequence</typeparam>
-		/// <param name="source">Source enumerable to took for elements</param>
-		/// <param name="needle">The key to find inside the source enumerable</param>
-		/// <returns>The value matching the provided key, or a default value if no element matches</returns>
-		public static TValue FirstOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, TKey needle)
-		{
-			return source
-				.FirstOrDefault(kv => Equals(kv.Key, needle))
-				.SelectOrDefault(kv => kv.Value);
-		}
+        /// <summary>
+        ///     Returns the first element of a key value pair sequence that matches the provided key.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the key inside the sequence</typeparam>
+        /// <typeparam name="TValue">Type of the value inside the sequence</typeparam>
+        /// <param name="source">Source enumerable to took for elements</param>
+        /// <param name="needle">The key to find inside the source enumerable</param>
+        /// <returns>The value matching the provided key, or a default value if no element matches</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> is null.</exception>
+        public static TValue FirstOrDefault<TKey, TValue>(
+            this IEnumerable<KeyValuePair<TKey, TValue>> source,
+            TKey needle)
+        {
+            return source
+                .FirstOrDefault(kv => Equals(kv.Key, needle))
+                .SelectOrDefault(kv => kv.Value);
+        }
 
-		/// <summary>
-		/// Returns the first element of a key value pair sequence that matches the provided key.
-		/// </summary>
-		/// <typeparam name="TKey">Type of the key inside the sequence</typeparam>
-		/// <typeparam name="TValue">Type of the value inside the sequence</typeparam>
-		/// <param name="source">Source enumerable to took for elements</param>
-		/// <param name="comparer">The comparer to use when looking for a matching key</param>
-		/// <param name="needle">The key to find inside the source enumerable</param>
-		/// <returns>The value matching the provided key, or a default value if no element matches</returns>
-		public static TValue FirstOrDefault<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> source, IEqualityComparer<TKey> comparer, TKey needle)
-		{
-			return source
-				.FirstOrDefault(kv => comparer.Equals(kv.Key, needle))
-				.SelectOrDefault(kv => kv.Value);
-		}
+        /// <summary>
+        ///     Returns the first element of a key value pair sequence that matches the provided key.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the key inside the sequence</typeparam>
+        /// <typeparam name="TValue">Type of the value inside the sequence</typeparam>
+        /// <param name="source">Source enumerable to took for elements</param>
+        /// <param name="comparer">The comparer to use when looking for a matching key</param>
+        /// <param name="needle">The key to find inside the source enumerable</param>
+        /// <returns>The value matching the provided key, or a default value if no element matches</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="source" /> or <paramref name="comparer" /> is null.</exception>
+        public static TValue FirstOrDefault<TKey, TValue>(
+            this IEnumerable<KeyValuePair<TKey, TValue>> source,
+            IEqualityComparer<TKey> comparer,
+            TKey needle)
+        {
+            return source
+                .FirstOrDefault(kv => comparer.Equals(kv.Key, needle))
+                .SelectOrDefault(kv => kv.Value);
+        }
 
-		/// <summary>
-		/// Iterates over a sequence of element and execute an action for each of them.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the elements in the enumerable</typeparam>
-		/// <param name="source">Sequence to iterate over</param>
-		/// <param name="action">Action to execute for each element</param>
-		/// <returns>Returns the original sequence</returns>
-		public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
-		{
-			foreach (var v in source)
-			{
-				action.Invoke(v);
+        /// <summary>
+        ///     Iterates over a sequence of element and execute an action for each of them.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements in the enumerable</typeparam>
+        /// <param name="source">Sequence to iterate over</param>
+        /// <param name="action">Action to execute for each element</param>
+        /// <returns>Returns the original sequence</returns>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        public static IEnumerable<TSource> Do<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
+        {
+            foreach (var v in source)
+            {
+                action.Invoke(v);
 
-				yield return v;
-			}
-		}
+                yield return v;
+            }
+        }
 
-		/// <summary>
-		/// Inserts a value at the begining of a sequence.
-		/// </summary>
-		/// <typeparam name="TSource">Type of elements in the sequence</typeparam>
-		/// <param name="source">Sequence to update</param>
-		/// <param name="value">Value to insert</param>
-		/// <returns>Returns a new sequence containing the inserted value</returns>
-		public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
-		{
-			yield return value;
+        /// <summary>
+        ///     Inserts a value at the begining of a sequence.
+        /// </summary>
+        /// <typeparam name="TSource">Type of elements in the sequence</typeparam>
+        /// <param name="source">Sequence to update</param>
+        /// <param name="value">Value to insert</param>
+        /// <returns>Returns a new sequence containing the inserted value</returns>
+        public static IEnumerable<TSource> Prepend<TSource>(this IEnumerable<TSource> source, TSource value)
+        {
+            yield return value;
 
-			foreach (var v in source)
-			{
-				yield return v;
-			}
-		}
+            foreach (var v in source)
+            {
+                yield return v;
+            }
+        }
 
-		/// <summary>
-		/// Inserts a value at the end of a sequence.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the elements in the sequence</typeparam>
-		/// <param name="source">Sequence to update</param>
-		/// <param name="value">Value to insert</param>
-		/// <returns>Returns a new sequence containing the inserted value</returns>
-		public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource value)
-		{
-			foreach (var v in source)
-			{
-				yield return v;
-			}
+        /// <summary>
+        ///     Inserts a value at the end of a sequence.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements in the sequence</typeparam>
+        /// <param name="source">Sequence to update</param>
+        /// <param name="value">Value to insert</param>
+        /// <returns>Returns a new sequence containing the inserted value</returns>
+        public static IEnumerable<TSource> Append<TSource>(this IEnumerable<TSource> source, TSource value)
+        {
+            foreach (var v in source)
+            {
+                yield return v;
+            }
 
-			yield return value;
-		}
+            yield return value;
+        }
 
-		/// <summary>
-		/// Returns an empty sequence of element if the original sequence is null.
-		/// </summary>
-		/// <typeparam name="TSource"></typeparam>
-		/// <param name="source"></param>
-		/// <returns></returns>
-		public static IEnumerable<TSource> Safe<TSource>(this IEnumerable<TSource> source)
-		{
-			return source ?? Enumerable.Empty<TSource>();
-		}
+        /// <summary>
+        ///     Returns an empty sequence of element if the original sequence is null.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<TSource> Safe<TSource>(this IEnumerable<TSource> source)
+        {
+            return source ?? Enumerable.Empty<TSource>();
+        }
 
-		/// <summary>
-		/// Ensures that a sequence contains at least a certain amount of elements.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the elements in the sequence</typeparam>
-		/// <param name="source">Sequence to validate</param>
-		/// <param name="count">Amount of required element in the sequence</param>
-		/// <returns>Returns true if the sequence as at least count elements, false otherwise</returns>
-		public static bool Require<TSource>(this IEnumerable<TSource> source, int count)
-		{
-			var i = 0;
+        /// <summary>
+        ///     Ensures that a sequence contains at least a certain amount of elements.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements in the sequence</typeparam>
+        /// <param name="source">Sequence to validate</param>
+        /// <param name="count">Amount of required element in the sequence</param>
+        /// <returns>Returns true if the sequence as at least count elements, false otherwise</returns>
+        public static bool Require<TSource>(this IEnumerable<TSource> source, int count)
+        {
+            var i = 0;
 
-			foreach (var v in source)
-			{
-				++i;
+            foreach (var v in source)
+            {
+                ++i;
 
-				if (i >= count)
-				{
-					return true;
-				}
-			}
+                if (i >= count)
+                {
+                    return true;
+                }
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		/// <summary>
-		/// Ensures that a sequence contains at least a certain amount of elements.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the elements in the sequence</typeparam>
-		/// <param name="source">Sequence to validate</param>
-		/// <param name="count">Amount of required element in the sequence</param>
-		/// <param name="predicate">Function that validates if an element should be included in the count</param>
-		/// <returns>Returns true if the sequence as at least count elements, false otherwise</returns>
-		public static bool Require<TSource>(this IEnumerable<TSource> source, int count, Func<TSource, bool> predicate)
-		{
-			var i = 0;
+        /// <summary>
+        ///     Ensures that a sequence contains at least a certain amount of elements.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the elements in the sequence</typeparam>
+        /// <param name="source">Sequence to validate</param>
+        /// <param name="count">Amount of required element in the sequence</param>
+        /// <param name="predicate">Function that validates if an element should be included in the count</param>
+        /// <returns>Returns true if the sequence as at least count elements, false otherwise</returns>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        public static bool Require<TSource>(this IEnumerable<TSource> source, int count, Func<TSource, bool> predicate)
+        {
+            var i = 0;
 
-			foreach (var v in source)
-			{
-				if (predicate.Invoke(v))
-				{
-					++i;
-				}
+            foreach (var v in source)
+            {
+                if (predicate.Invoke(v))
+                {
+                    ++i;
+                }
 
-				if (i >= count)
-				{
-					return true;
-				}
-			}
+                if (i >= count)
+                {
+                    return true;
+                }
+            }
 
-			return false;
-		}
-		
-		/// <summary>
-		/// Maps a sequence of actions over to a sequence of elements and execute each actions over their corresponding element.
-		/// Stops executing when all actions have been exhausted.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the element in the sequence</typeparam>
-		/// <param name="source">Sequence of element to use as data in the sequence of actions</param>
-		/// <param name="actions">Sequence of actions to execute over each element in the source sequence</param>
-		public static void Distribute<TSource>(this IEnumerable<TSource> source, params Action<TSource>[] actions)
-		{
-			var actionEnumerator = actions.GetEnumerator();
+            return false;
+        }
 
-			foreach (var item in source)
-			{
-				if (!actionEnumerator.MoveNext())
-				{
-					return;
-				}
+        /// <summary>
+        ///     Maps a sequence of actions over to a sequence of elements and execute each actions over their corresponding
+        ///     element.
+        ///     Stops executing when all actions have been exhausted.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the element in the sequence</typeparam>
+        /// <param name="source">Sequence of element to use as data in the sequence of actions</param>
+        /// <param name="actions">Sequence of actions to execute over each element in the source sequence</param>
+        public static void Distribute<TSource>(this IEnumerable<TSource> source, params Action<TSource>[] actions)
+        {
+            var actionEnumerator = actions.GetEnumerator();
 
-				actionEnumerator.Current.As<Action<TSource>>().Invoke(item);
-			}
-		}
+            foreach (var item in source)
+            {
+                if (!actionEnumerator.MoveNext())
+                {
+                    return;
+                }
 
-		/// <summary>
-		/// Maps a sequence of actions over to a sequence of elements and execute each actions over their corresponding element.
-		/// Continues executing using an overflow action when there is more elements provided than actions.
-		/// </summary>
-		/// <typeparam name="TSource">Type of the element in the sequence</typeparam>
-		/// <param name="source">Sequence of element to use as data in the sequence of actions</param>
-		/// <param name="overflow">Action to use when all actions have been exhausted</param>
-		/// <param name="actions">Sequence of actions to execute over each element in the source sequence</param>
-		public static void DistributeWithOverflow<TSource>(this IEnumerable<TSource> source, Action<TSource> overflow, params Action<TSource>[] actions)
-		{
-			var actionEnumerator = actions.GetEnumerator();
+                actionEnumerator.Current.As<Action<TSource>>().Invoke(item);
+            }
+        }
 
-			foreach (var item in source)
-			{
-				if (!actionEnumerator.MoveNext())
-				{
-					overflow.Invoke(item);
+        /// <summary>
+        ///     Maps a sequence of actions over to a sequence of elements and execute each actions over their corresponding
+        ///     element.
+        ///     Continues executing using an overflow action when there is more elements provided than actions.
+        /// </summary>
+        /// <typeparam name="TSource">Type of the element in the sequence</typeparam>
+        /// <param name="source">Sequence of element to use as data in the sequence of actions</param>
+        /// <param name="overflow">Action to use when all actions have been exhausted</param>
+        /// <param name="actions">Sequence of actions to execute over each element in the source sequence</param>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        public static void DistributeWithOverflow<TSource>(
+            this IEnumerable<TSource> source,
+            Action<TSource> overflow,
+            params Action<TSource>[] actions)
+        {
+            var actionEnumerator = actions.GetEnumerator();
 
-					continue;
-				}
+            foreach (var item in source)
+            {
+                if (!actionEnumerator.MoveNext())
+                {
+                    overflow.Invoke(item);
 
-				actionEnumerator.Current.As<Action<TSource>>().Invoke(item);
-			}
-		}
-	}
+                    continue;
+                }
+
+                actionEnumerator.Current.As<Action<TSource>>().Invoke(item);
+            }
+        }
+    }
 }

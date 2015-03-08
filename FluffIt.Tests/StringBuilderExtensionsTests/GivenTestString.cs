@@ -31,24 +31,24 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluffIt.Tests.StringBuilderExtensionsTests
 {
-	[TestClass]
-	public class GivenStringBuilderExtensions
-	{
-		[TestMethod]
-		public void WhenLast_ThenLastChar()
-		{
-			var builder = new StringBuilder("abcd");
+    [TestClass]
+    public class GivenStringBuilderExtensions
+    {
+        [TestMethod]
+        public void WhenLast_ThenLastChar()
+        {
+            var builder = new StringBuilder("abcd");
 
-			Assert.AreEqual('d', builder.ToEnumerable().Last());
-		}
+            Assert.AreEqual('d', builder.ToEnumerable().Last());
+        }
 
-		[TestMethod]
-		[ExpectedException(typeof(InvalidOperationException))]
-		public void WhenHeadWithMatchingPredicate_ThenLastCharIsRemoved()
-		{
-			var builder = new StringBuilder(string.Empty);
+        [TestMethod]
+        [ExpectedException(typeof (InvalidOperationException))]
+        public void WhenHeadWithMatchingPredicate_ThenLastCharIsRemoved()
+        {
+            var builder = new StringBuilder(string.Empty);
 
-			builder.ToEnumerable().Last();
-		}
-	}
+            builder.ToEnumerable().Last();
+        }
+    }
 }
