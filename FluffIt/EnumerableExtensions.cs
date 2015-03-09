@@ -165,7 +165,7 @@ namespace FluffIt
         {
             return source
                 .FirstOrDefault(kv => Equals(kv.Key, needle))
-                .SelectOrDefault(kv => kv.Value);
+                .SelectOrDefaultKey(kv => kv.Value);
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace FluffIt
         {
             return source
                 .FirstOrDefault(kv => comparer.Equals(kv.Key, needle))
-                .SelectOrDefault(kv => kv.Value);
+                .SelectOrDefaultKey(kv => kv.Value, comparer);
         }
 
         /// <summary>

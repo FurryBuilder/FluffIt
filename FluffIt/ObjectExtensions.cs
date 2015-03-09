@@ -161,6 +161,79 @@ namespace FluffIt
         }
 
         /// <summary>
+        ///     Projects the source key value pair to a new form if the key is not null or of default value.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the key to project</typeparam>
+        /// <typeparam name="TValue">Type of the value to project</typeparam>
+        /// <typeparam name="TResult">Type of the projected result</typeparam>
+        /// <param name="source">Value to project</param>
+        /// <param name="selector">Transformation function to invoke on source</param>
+        /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
+        /// <returns>The projected value resulting from the transformation function.</returns>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
+        public static TResult SelectOrDefaultKey<TKey, TValue, TResult>(
+            this KeyValuePair<TKey, TValue> source,
+            [NotNull, InstantHandle] Func<KeyValuePair<TKey, TValue>, TResult> selector,
+            [CanBeNull] IEqualityComparer<TKey> valueTypeComparer = null
+            )
+        {
+            return source.Key.IsNullOrDefault(valueTypeComparer)
+                ? default(TResult)
+                : selector.Invoke(source);
+        }
+
+        /// <summary>
+        ///     Projects the source key value pair to a new form if the key is not null or of default value.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the key to project</typeparam>
+        /// <typeparam name="TValue">Type of the value to project</typeparam>
+        /// <typeparam name="TResult">Type of the projected result</typeparam>
+        /// <param name="source">Value to project</param>
+        /// <param name="selector">Transformation function to invoke on source</param>
+        /// <param name="defaultValueFactory">Value factory to use when the source is null or default</param>
+        /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
+        /// <returns>The projected value resulting from the transformation function.</returns>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
+        public static TResult SelectOrDefaultKey<TKey, TValue, TResult>(
+            this KeyValuePair<TKey, TValue> source,
+            [NotNull, InstantHandle] Func<KeyValuePair<TKey, TValue>, TResult> selector,
+            [NotNull, InstantHandle] Func<TResult> defaultValueFactory,
+            [CanBeNull] IEqualityComparer<TKey> valueTypeComparer = null
+            )
+        {
+            return source.Key.IsNullOrDefault(valueTypeComparer)
+                ? defaultValueFactory.Invoke()
+                : selector.Invoke(source);
+        }
+
+        /// <summary>
+        ///     Projects the source key value pair to a new form if the key is not null or of default value.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the key to project</typeparam>
+        /// <typeparam name="TValue">Type of the value to project</typeparam>
+        /// <typeparam name="TResult">Type of the projected result</typeparam>
+        /// <param name="source">Value to project</param>
+        /// <param name="selector">Transformation function to invoke on source</param>
+        /// <param name="defaultValue">Value to use when the source is null or default</param>
+        /// <param name="valueTypeComparer">Comparer to use when checking for default value. Optional</param>
+        /// <returns>The projected value resulting from the transformation function.</returns>
+        /// <exception cref="Exception">A delegate callback throws an exception. </exception>
+        [PublicAPI]
+        public static TResult SelectOrDefaultKey<TKey, TValue, TResult>(
+            this KeyValuePair<TKey, TValue> source,
+            [NotNull, InstantHandle] Func<KeyValuePair<TKey, TValue>, TResult> selector,
+            [CanBeNull] TResult defaultValue,
+            [CanBeNull] IEqualityComparer<TKey> valueTypeComparer = null
+            )
+        {
+            return source.Key.IsNullOrDefault(valueTypeComparer)
+                ? defaultValue
+                : selector.Invoke(source);
+        }
+
+        /// <summary>
         ///     Invokes a method on a source only when the source is not null or uses a default value.
         /// </summary>
         /// <typeparam name="TSource">Type of the value to check</typeparam>
